@@ -1,0 +1,45 @@
+{
+ "format": "avsim-studio/1",
+ "params": {
+  "cutT0": 5.0,
+  "cutDur": 2.4,
+  "cutV": 15.0,
+  "pedT0": 9.6,
+  "pedV": 1.45,
+  "busGo": 17.5,
+  "cutDs": -4.0,
+  "tgT": 0.9,
+  "mu": 0.8,
+  "cutGap": null,
+  "cutBrake": 0.0,
+  "pedGap": null,
+  "pedLook": 0,
+  "civil": false
+ },
+ "policy": {
+  "v0": 12.5,
+  "T": 1.6,
+  "a": 1.4,
+  "b": 2.0,
+  "s0": 2.5,
+  "cautionV": 7.5,
+  "cautionRange": 55.0,
+  "pedBuffer": 2.5,
+  "cutinLat": 2.15
+ },
+ "hazards": [
+  {
+   "type": "stalled",
+   "x": 60,
+   "lane": "E2"
+  }
+ ],
+ "space": {
+  "h0_x": [
+   20,
+   140
+  ]
+ },
+ "exposure": 0.005,
+ "why": "Xe chết máy / đỗ sai đứng yên trong làn của xe ta. exposure = 0.005 là GIẢ ĐỊNH dạy học, không đo được từ dữ liệu trong lab: ~1 lần gặp xe đứng yên chắn làn trên 200 chuyến đô thị ngắn; cần thay bằng tần suất xe dừng trong làn từ log đội xe. space h0_x 20..140 m bao quanh x = 60, vị trí mà xe chết máy chặn đường xe chuyển làn C2 (đúng chỗ planner bị ép), đến 140 m là nơi planner đã tránh được trong quét tay; ngoài ra giữ trong LIMITS x -200..320."
+}
