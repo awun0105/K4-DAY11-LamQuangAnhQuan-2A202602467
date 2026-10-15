@@ -94,7 +94,7 @@ Nhắc thêm: `choose_policy` chọn bản này vì các ứng viên `cutinLat` 
 
 Núm "nghe an toàn hơn" nhưng tệ hơn: `T` = 2,0 (giãn khoảng cách theo sau) có `fail_hi` TRAIN = 6,48e-4, cao hơn policy gốc (3,42e-4). Giải thích khả dĩ: xe chuyển làn chờ một khe đủ rộng (gap acceptance), nên khoảng trống lớn hơn trước mặt ta mời xe C2 chen vào sớm hơn và gần hơn. Đây là suy luận từ cơ chế, chưa tách riêng để kiểm chứng.
 
-Ảnh 3D với policy sửa (`cutinLat` = 3,0) trên kịch bản B-01 (nạp `evidence/shots/viewer_fixed_policy.json`, bản `viewer.json` đổi policy của các lần chạy `bus_bypass` sang bản sửa), t = 12,6 s: ![fix](evidence/shots/q6_fix_vs_ghost_B-01.png) Cùng kịch bản mà policy gốc đâm C2 lúc 12,55 s, bản sửa không va chạm. Lưu ý: bóng mờ của policy gốc **không thấy rõ** trong ảnh này.
+Ảnh 3D có bóng mờ (`evidence/viewer.json`, kịch bản B-01, t = 13,0 s): ![fix](evidence/shots/q6_fix_vs_ghost_B-01.png) Xe ta với policy gốc (xe đặc) đâm xe C2 lúc 12,6 s (nhãn "va chạm"); **bóng mờ** phía sau là xe ta với bản sửa `cutinLat` = 3,0 trên cùng kịch bản: không va chạm (trình xem ghi "không va chạm" cho bản sửa).
 
 ## 7. Từ mô phỏng ra đường thật
 
@@ -126,7 +126,7 @@ Nếu được thêm một tuần: đo lại trên ~10⁵ lần chạy Monte Car
 | policy chọn ở bước E | 0 | 0 | 0 | 0 | 0 |
 
   P(lỗi planner | rắc rối) = 0, Wilson 95 % = [0 ; 3,03e-3]; tần suất mỗi chuyến = 0,005 × cận trên 3,03e-3 = **1,51e-5** (`per_trip_hi`), thấp hơn nhiều so với tần suất lách xe buýt (Monte Carlo 2,33e-3).
-- **Hình:** chưa chụp ảnh chương 9/10 cho rắc rối này (sweep không có va chạm nào để chụp; cảnh gốc x = 60 chưa dựng lại trong chương 10).
+- **Hình:** ![xe chết máy](evidence/shots/q9_stalled_scene_6.2s.png) cảnh `hazard.json` nạp vào chương 10 (nhãn "H0 xe chết máy" cạnh xe buýt, t = 13,0 s). Đây là ảnh cảnh dựng, **không phải ảnh lúc va chạm**: sweep không có va chạm nào, và tôi chưa dựng lại đúng khoảnh khắc ego–C2 lúc 6,2 s.
 - **Bạn tự lái thì sao:** chưa thử tự lái.
 - **Cách sửa:** không cần núm nào: planner đã xử lý tốt rắc rối này trên dải [20, 140] m (đây cũng là một kết quả). Cận trên 3,03e-3 với n = 1 266 không phải bằng chứng an toàn tuyệt đối. Lưu ý "tránh được" là chuẩn lạc quan: nó cho phanh hết cỡ ngay khi thấy, nên đếm nhiều hơn số va chạm một planner thật tránh được, nhưng cũng chỉ thử phanh nên đếm ít đi so với khi được đánh lái. Còn cảnh gốc (x = 60) cho thấy một va chạm `ego`–`C2` khi xe chết máy chắn làn; nếu muốn sửa cần thêm logic dự đoán xe chuyển làn có thể chen vào khi ta bị ép về một phía.
 
