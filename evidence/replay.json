@@ -3,9 +3,9 @@
  "dropped_human_crash_logs": 1,
  "n_used": 399,
  "replay": {
-  "crashes": 124,
+  "crashes": 122,
   "contact": {
-   "rear": 113,
+   "rear": 111,
    "side": 11
   }
  },
