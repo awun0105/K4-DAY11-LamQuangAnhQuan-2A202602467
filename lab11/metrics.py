@@ -36,7 +36,8 @@ def min_ttc(R: core.Rollout, cap: float = 10.0) -> np.ndarray:
     j = np.where(has, lead, 0)
     L = np.take_along_axis(R.F, j[:, :, None, None], axis=2)[:, :, 0]   # leader state, (K, NF, 7)
     lon = (L[..., 0] - e[..., 0]) * e[..., 2] + (L[..., 1] - e[..., 1]) * e[..., 3]
-    gap = np.maximum(lon - HALF_EGO - core.LEN[j] / 2, 0.0)
+    lens = np.array([a.dims[0] for a in R.actors]) if getattr(R, "actors", None) else core.LEN   # hazard actors extend N
+    gap = np.maximum(lon - HALF_EGO - lens[j] / 2, 0.0)
     dv = e[..., 4] - L[..., 4]
     ok = has & (dv > 0.1)
     ttc = np.where(ok, gap / np.maximum(dv, 1e-6), np.inf)
@@ -54,7 +55,8 @@ def contact_type(R: core.Rollout, k: int, event: dict) -> str:
     f = event["f"]
     ego = R.F[k, f, core.IX["ego"]]
     other = event["b"] if event["a"] == "ego" else event["a"]
-    o = R.F[k, f, core.IX[other]]
+    ids = getattr(R, "ids", None)
+    o = R.F[k, f, ids.index(other) if ids and other in ids else core.IX[other]]
     rx, rz = float(o[0] - ego[0]), float(o[1] - ego[1])
     hx, hz = float(ego[2]), float(ego[3])
     lon = rx * hx + rz * hz
