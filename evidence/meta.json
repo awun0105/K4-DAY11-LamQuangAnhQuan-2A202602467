@@ -8,13 +8,17 @@
   "world": {
    "quick": false,
    "at": "2026-10-15 10:05"
+  },
+  "replay": {
+   "quick": false,
+   "at": "2026-10-15 10:06"
   }
  },
  "_run": {
   "mssv": "202602467",
   "town": "A",
   "quick": false,
-  "step": "world",
+  "step": "replay",
   "salted": false,
   "budgets": {
    "replay_n": 400,
