@@ -32,13 +32,17 @@
   "mine": {
    "quick": false,
    "at": "2026-10-15 11:09"
+  },
+  "export": {
+   "quick": false,
+   "at": "2026-10-15 11:10"
   }
  },
  "_run": {
   "mssv": "202602467",
   "town": "A",
   "quick": false,
-  "step": "mine",
+  "step": "export",
   "salted": false,
   "budgets": {
    "replay_n": 400,
