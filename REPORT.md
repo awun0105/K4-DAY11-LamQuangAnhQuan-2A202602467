@@ -58,7 +58,22 @@ So ngân sách: IS dùng 16 800 lần chạy (3 seed); để Monte Carlo có đ�
 
 ## 5. Các kiểu thất bại (bước C2 + 3D)
 
-Mỗi kiểu bạn tìm thấy: một ảnh chụp trình xem 3D (chương 9) ở đúng lúc va chạm, và một câu mô tả chuỗi sự kiện (ai thấy gì, ai chờ gì). Kiểu nào cuộc săn **không** tìm thấy, và bạn tin điều đó ở mức nào? Nếu chỉ chạy **một** cuộc săn chung cho mọi kiểu thì điều gì xảy ra (gợi ý: `hunt.json: found` của từng cuộc săn)?
+Kết quả `hunt.json: <cuộc săn>.found`:
+
+| cuộc săn | tìm thấy |
+|---|---|
+| bus_bypass | bus_bypass 95 |
+| cut_in | bus_bypass 52 (không có cut_in) |
+| crosswalk_block | crosswalk_block 67, bus_bypass 1 |
+| rear_ended | crosswalk_block 7, bus_bypass 4 (không có rear_ended) |
+
+- **bus_bypass**: xe chuyển làn C2 (chậm, x < 112 m) lách qua xe buýt đỗ; xe ta không thấy nó đủ sớm vì xe buýt che, rồi đâm vào.
+- **crosswalk_block**: người đi bộ P1 bước ra từ sau xe buýt đỗ; xe ta phanh gấp nhưng dừng khi thân xe còn nằm trên vạch, chặn lối người đi bộ.
+- **cut_in và rear_ended**: cuộc săn **không tìm thấy**; chỉ là kết quả "chưa thấy", không phải bằng chứng không tồn tại. Cận trên 95 % là 2,5e-2 (`upper_zero_hits`) ở IS và 1,28e-3 ở Monte Carlo.
+
+Nếu chỉ chạy một cuộc săn chung, CEM co về kiểu dễ nhất (`bus_bypass`, nó chiếm mặt `found` của cả `cut_in` lẫn `rear_ended`), và các kiểu hiếm như `crosswalk_block` sẽ không được khám phá.
+
+Ảnh 3D (chương 9): *chưa chụp trong lần chạy này*; `evidence/viewer.json` đã export sẵn để mở trong `viewer/index.html`.
 
 ## 6. Sửa planner (bước E + 3D)
 
