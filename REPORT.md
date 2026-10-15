@@ -52,7 +52,7 @@ Các kiểu chưa từng xuất hiện trong 3 000 lần: `cut_in`, `crosswalk_b
 
 `cut_in` và `rear_ended` ở cả 3 seed: p = 0, hits = 0, `upper_zero_hits` = 0,025 (cận trên, không phải 0). `total` theo seed: 3,74e-4 / 6,97e-4 / 1,64e-3.
 
-Ba seed **không đồng ý** (chênh ~4,4 lần) và đều **thấp hơn** Monte Carlo (2,33e-3), đúng với cảnh báo "IS thường thấp hơn 1,5–4 lần". Seed 2 gần MC nhất. `top_share` > 0,5 chỉ ở seed 0 `bus_bypass` (0,54): hơn một nửa con số là trọng số của đúng một mẫu, nên ước lượng thực chất là một điểm. Các mẫu khác cũng gần 0,5, nên con số kém tin cậy.
+Ba seed **không đồng ý** (chênh ~4,4 lần) và đều **thấp hơn** Monte Carlo (2,33e-3), đúng với cảnh báo "IS thường thấp hơn 1,5–4 lần". Seed 2 gần MC nhất. `top_share` > 0,5 chỉ ở seed 0 `bus_bypass` (0,54): hơn một nửa con số là trọng số của đúng một mẫu, nên ước lượng thực chất là một điểm. Các `top_share` còn lại (0,36 đến 0,48) cũng cao, nên con số kém tin cậy.
 
 So ngân sách: IS dùng 16 800 lần chạy (3 seed); để Monte Carlo có độ chính xác ±20 % tại p ≈ 1e-3 cần ~96/1e-3 ≈ 96 000 lần, và với `crosswalk_block` (p ~ 1e-7 đến 1e-6) cần hàng trăm triệu lần: IS rẻ hơn nhiều bậc, nhưng con số kém chắc. Phần `other` lấy từ Monte Carlo (`estimate.json: other` = k 0, n 3 000, p = 0, hi = 1,28e-3, source `mc.json`) vì nó không thuộc kiểu nào nên CEM không săn; tổng = các kiểu + `other`.
 
@@ -90,7 +90,7 @@ Nếu chỉ chạy một cuộc săn chung, CEM co về kiểu dễ nhất (`bus
 
 Vì sao `fail_hi` của bản sửa (3,88e-2) lớn hơn `fail` của bản gốc (1,53e-3) dù bản sửa tốt hơn: kiểu `bus_bypass` được đánh dấu `unseen` (0 va chạm trên TEST), nên nó vẫn cộng cận trên 3/(0,2·n) ≈ 3,75e-2 vào `fail_hi`. Với n = 400, không thể chứng nhận được một kiểu đã biến mất. Bản sửa **có vẻ** tốt hơn (`fail_hi_seen` 4,54e-8 so với 3,69e-3), nhưng dữ liệu không đủ để chứng nhận.
 
-Nhắc thêm: `choose_policy` chọn bản này vì mọi ứng viên có `cutinLat` ≥ 3,0 đều có TRAIN `fail_hi` = 0 do `unseen`: đúng cái bẫy README cảnh báo. Con số nên tin là TEST, không phải TRAIN.
+Nhắc thêm: `choose_policy` chọn bản này vì các ứng viên `cutinLat` ≥ 3,0 (và `{cutinLat 2.6, cautionV 7.0, pedBuffer 3.5}`) đều có `bus_bypass` là `unseen`, nên TRAIN `fail_hi` chỉ còn phần `crosswalk_block` (2,1e-7 đến 3,5e-7) và thắng bản gốc (3,42e-4): đúng cái bẫy README cảnh báo. Con số nên tin là TEST, không phải TRAIN.
 
 Núm "nghe an toàn hơn" nhưng tệ hơn: `T` = 2,0 (giãn khoảng cách theo sau) có `fail_hi` TRAIN = 6,48e-4, cao hơn policy gốc (3,42e-4). Giải thích khả dĩ: xe chuyển làn chờ một khe đủ rộng (gap acceptance), nên khoảng trống lớn hơn trước mặt ta mời xe C2 chen vào sớm hơn và gần hơn. Đây là suy luận từ cơ chế, chưa tách riêng để kiểm chứng.
 
@@ -115,10 +115,10 @@ Nếu được thêm một tuần: đo lại trên ~10⁵ lần chạy Monte Car
 
 ## 9. Rắc rối của bạn (bước G + chương 10)
 
-- **Rắc rối:** một **xe chết máy** đứng yên trong làn của xe ta (`hazard.json`: `stalled`, `lane` E2, `x` = 60 m). Ngoài đời: xe hỏng hoặc đỗ sai chắn làn.
-- **Căn cứ:** xe đứng yên không có tín hiệu di chuyển, planner có thể phản ứng muộn, và nó còn làm lệch hành vi của xe chuyển làn C2 phía sau. Trong cảnh gốc (x = 60), planner tông C2 lúc 6,2 s (`mine.json: exact.planner`), nên tôi nghi ngờ sự tương tác này.
+- **Rắc rối:** một **xe chết máy** đứng yên trong làn E2, làn bên cạnh xe ta (xe ta chạy ở E1; `hazard.json`: `stalled`, `lane` E2, `x` = 60 m). Ngoài đời: xe hỏng hoặc đỗ sai chắn làn bên.
+- **Căn cứ:** xe đứng yên không có tín hiệu di chuyển, planner có thể phản ứng muộn, và nó chặn đường của xe chuyển làn C2 (cùng làn E2), buộc C2 chen sang làn xe ta. Trong cảnh gốc (x = 60), planner tông C2 lúc 6,2 s (`mine.json: exact.planner`), nên tôi nghi ngờ sự tương tác này.
 - **Giả định:** `space.h0_x` = [20, 140] m; `exposure` = 0,005 chuyến⁻¹ là **giả định dạy học** (khoảng 1 lần gặp xe chắn làn trên 200 chuyến đô thị), không có dữ liệu thật trong lab (`hazard.json: why`).
-- **Kết quả** (`mine.json`), 1 494 phiên bản khả thi trên 1 500 (`accepted` = 0,996; `n` = 1 266 sau khi bỏ 228 phiên bản có xe chết máy trùng vị trí xe ta lúc đầu):
+- **Kết quả** (`mine.json`), 1 494 phiên bản khả thi trên 1 500 (`accepted` = 0,996; `n` = 1 266 sau khi bỏ 228 phiên bản mà xe chết máy trùng thân xe buýt đỗ ngay từ đầu, `overlap_at_start`; vì `h0_x` [20, 140] chứa vị trí xe buýt ~106 m):
 
 | | crashes | avoidable | unavoidable | unattributed | low_speed |
 |---|---|---|---|---|---|

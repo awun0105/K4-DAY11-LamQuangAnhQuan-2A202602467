@@ -41,5 +41,5 @@
   ]
  },
  "exposure": 0.005,
- "why": "Xe chết máy / đỗ sai đứng yên trong làn của xe ta. exposure = 0.005 là GIẢ ĐỊNH dạy học, không đo được từ dữ liệu trong lab: ~1 lần gặp xe đứng yên chắn làn trên 200 chuyến đô thị ngắn; cần thay bằng tần suất xe dừng trong làn từ log đội xe. space h0_x 20..140 m bao quanh x = 60, vị trí mà xe chết máy chặn đường xe chuyển làn C2 (đúng chỗ planner bị ép), đến 140 m là nơi planner đã tránh được trong quét tay; ngoài ra giữ trong LIMITS x -200..320."
+ "why": "Xe chết máy / đỗ sai đứng yên trong làn E2, làn bên cạnh làn của xe ta (E1), nơi xe chuyển làn C2 và xe buýt đi qua. exposure = 0.005 là GIẢ ĐỊNH dạy học, không đo được từ dữ liệu trong lab: ~1 lần gặp xe đứng yên chắn làn bên trên 200 chuyến đô thị ngắn; cần thay bằng tần suất xe dừng trong làn từ log đội xe. space h0_x 20..140 m bao quanh x = 60, vị trí mà xe chết máy chặn đường C2 và đẩy C2 chen vào làn xe ta (cảnh gốc: ego-C2 va chạm lúc 6,2 s); đến 140 m là nơi planner đã tránh được trong quét tay. Lưu ý: khoảng này có chứa vị trí xe buýt đỗ (x ~ 106), nên ~15% phiên bản bị bỏ vì xe chết máy trùng thân xe buýt (overlap_at_start). Ngoài ra giữ trong LIMITS x -200..320."
 }
