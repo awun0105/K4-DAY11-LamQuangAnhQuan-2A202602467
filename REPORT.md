@@ -39,7 +39,22 @@ Các kiểu chưa từng xuất hiện trong 3 000 lần: `cut_in`, `crosswalk_b
 
 ## 4. Importance sampling, ESS và độ suy biến (bước C3)
 
-Bảng: với từng kiểu và từng seed trong `estimate.json`, ghi `p`, `hits`, `ess`, `top_share`. Ba seed có đồng ý với nhau không, và có đồng ý với Monte Carlo không? Ở đâu `top_share` lớn (> 0,5), và vì sao khi đó con số thực ra chỉ là trọng số của một mẫu? So ngân sách (`budget`) với số lần chạy Monte Carlo cần để có cùng độ chính xác. Phần `other` trong tổng lấy từ đâu, và vì sao không săn nó?
+`estimate.json` (`budget` = 16 800 lần chạy mô phỏng; n = 600 mẫu mỗi kiểu mỗi seed):
+
+| seed | kiểu | p | hits | ess | top_share |
+|---|---|---|---|---|---|
+| 0 | bus_bypass | 3,74e-4 | 36 | 124 | 0,54 |
+| 0 | crosswalk_block | 2,13e-7 | 96 | 137 | 0,36 |
+| 1 | bus_bypass | 6,97e-4 | 67 | 119 | 0,48 |
+| 1 | crosswalk_block | 2,95e-7 | 94 | 102 | 0,42 |
+| 2 | bus_bypass | 1,64e-3 | 56 | 125 | 0,38 |
+| 2 | crosswalk_block | 1,43e-6 | 119 | 128 | 0,48 |
+
+`cut_in` và `rear_ended` ở cả 3 seed: p = 0, hits = 0, `upper_zero_hits` = 0,025 (cận trên, không phải 0). `total` theo seed: 3,74e-4 / 6,97e-4 / 1,64e-3.
+
+Ba seed **không đồng ý** (chênh ~4,4 lần) và đều **thấp hơn** Monte Carlo (2,33e-3), đúng với cảnh báo "IS thường thấp hơn 1,5–4 lần". Seed 2 gần MC nhất. `top_share` > 0,5 chỉ ở seed 0 `bus_bypass` (0,54): hơn một nửa con số là trọng số của đúng một mẫu, nên ước lượng thực chất là một điểm. Các mẫu khác cũng gần 0,5, nên con số kém tin cậy.
+
+So ngân sách: IS dùng 16 800 lần chạy (3 seed); để Monte Carlo có độ chính xác ±20 % tại p ≈ 1e-3 cần ~96/1e-3 ≈ 96 000 lần, và với `crosswalk_block` (p ~ 1e-7 đến 1e-6) cần hàng trăm triệu lần: IS rẻ hơn nhiều bậc, nhưng con số kém chắc. Phần `other` lấy từ Monte Carlo (`estimate.json: other` = k 0, n 3 000, p = 0, hi = 1,28e-3, source `mc.json`) vì nó không thuộc kiểu nào nên CEM không săn; tổng = các kiểu + `other`.
 
 ## 5. Các kiểu thất bại (bước C2 + 3D)
 
