@@ -12,7 +12,7 @@ Thị trấn của bạn (`meta.json: _run.town`): **A**
 
 | | va chạm | rear | side |
 |---|---|---|---|
-| phát lại (`replay`) | 124 | 113 | 11 |
+| phát lại (`replay`) | 122 | 111 | 11 |
 | phản ứng (`reactive`) | 1 | 0 | 1 |
 
 `crash_in_both` = 1, `replay_only` có 20 kịch bản (ví dụ #12, #14, #15: đều `rear`).
