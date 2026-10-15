@@ -12,13 +12,17 @@
   "replay": {
    "quick": false,
    "at": "2026-10-15 10:06"
+  },
+  "mc": {
+   "quick": false,
+   "at": "2026-10-15 10:07"
   }
  },
  "_run": {
   "mssv": "202602467",
   "town": "A",
   "quick": false,
-  "step": "replay",
+  "step": "mc",
   "salted": false,
   "budgets": {
    "replay_n": 400,
