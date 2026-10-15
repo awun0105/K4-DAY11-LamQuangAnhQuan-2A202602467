@@ -21,7 +21,13 @@ Vì sao phần lớn là `rear` và là va chạm **giả**: trong log, xe phía
 
 ## 2. Kịch bản bất khả thi (bước B)
 
-Liệt kê các luật trong `is_feasible` và căn cứ vật lý của từng luật (ma sát, gia tốc, tốc độ người). Trong `hunt.json`, cuộc săn nào sinh nhiều kịch bản bất khả thi nhất, và vì sao CEM lại bị kéo về phía đó? Điều gì xảy ra với ước lượng nếu bạn **đếm** chúng là va chạm?
+Bốn luật trong `is_feasible` (`lab11/feasible.py`):
+1. Đổi làn cần a_lat = (π/cutDur)²·3,5/2 > μg: vượt độ bám của lốp thì không xe nào làm được.
+2. `cutBrake` > μg: không phanh mạnh hơn ma sát cho phép.
+3. `pedV` > 2,5 m/s: người đi bộ không chạy nhanh vậy khi băng đường.
+4. `cutV` ngoài (0, 22] m/s: xe đứng yên hoặc nhanh quá tốc độ của phố này.
+
+Số kịch bản bất khả thi bị bỏ (`hunt.json: <kiểu>.infeasible`): `bus_bypass` 2, `cut_in` 4, `rear_ended` 4, **`crosswalk_block` 17** (nhiều nhất). CEM bị kéo về phía đó vì các giá trị cực đoan (người đi bộ chạy nhanh, đổi làn rất gấp) làm điểm nguy hiểm cao nhất. Trong `mc.json` có `infeasible` = 12 trên 3 000 lần rút tự nhiên. Nếu **đếm** chúng là va chạm thì ước lượng bị thổi phồng bằng những tình huống không thể xảy ra, và hunt "tìm thấy" lỗi không có thật.
 
 ## 3. Monte Carlo cho bạn biết gì (bước C1)
 
