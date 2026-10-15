@@ -28,7 +28,9 @@ def log_weights(Z, Bn, nat: space.Natural, prop: dict, beta: float = 0.2) -> np.
 
     nat.logpdf(Z, Bn) gives log p; proposal_logpdf(prop, Z, Bn) gives log of the CEM proposal.
     Use np.logaddexp so a weight of 1e-30 does not underflow to 0."""
-    raise NotImplementedError("TODO 6: log_weights")
+    lp = nat.logpdf(Z, Bn)
+    lq = np.logaddexp(math.log1p(-beta) + proposal_logpdf(prop, Z, Bn), math.log(beta) + lp)
+    return lp - lq
 
 
 def is_estimate(logw: np.ndarray, y: np.ndarray, z: float = 1.96) -> dict:
@@ -38,7 +40,14 @@ def is_estimate(logw: np.ndarray, y: np.ndarray, z: float = 1.96) -> dict:
     se = std(w * y, ddof=1) / sqrt(n); CI = [max(0, p - z se), p + z se];
     Kish effective sample size ess = (sum w)^2 / sum(w^2).
     Return dict(p=, lo=, hi=, se=, ess=, n=)."""
-    raise NotImplementedError("TODO 7: is_estimate")
+    logw, y = np.asarray(logw, dtype=float), np.asarray(y, dtype=float)
+    n = len(y)
+    w = np.exp(logw)
+    wy = w * y
+    p = float(wy.mean())
+    se = float(wy.std(ddof=1) / math.sqrt(n)) if n > 1 else 0.0
+    ess = float(w.sum() ** 2 / np.sum(w ** 2)) if np.sum(w ** 2) > 0 else 0.0
+    return dict(p=p, lo=max(0.0, p - z * se), hi=p + z * se, se=se, ess=ess, n=n)
 
 
 def rule_of_three(n_eff: float) -> float:
