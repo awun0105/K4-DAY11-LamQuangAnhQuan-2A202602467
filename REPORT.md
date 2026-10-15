@@ -112,13 +112,18 @@ Nếu được thêm một tuần: đo lại trên ~10⁵ lần chạy Monte Car
 
 ## 9. Rắc rối của bạn (bước G + chương 10)
 
-- **Rắc rối:** bạn dựng gì, và ngoài đời nó giống tình huống nào.
-- **Căn cứ:** vì sao bạn nghĩ planner sẽ xử lý kém.
-- **Giả định:** `space` và `exposure` lấy từ đâu (`hazard.json: why`).
-- **Kết quả**, theo `mine.json`:
-  - số va chạm `avoidable` (tránh được bằng phanh hết cỡ, biết trước), `unavoidable`, `unattributed`, và `low_speed`, với policy gốc và với policy bạn chọn; `accepted` (bao nhiêu phần `space` của bạn là khả thi);
-  - P(lỗi planner | rắc rối) kèm khoảng Wilson;
-  - tần suất mỗi chuyến, đặt cạnh tần suất lách xe buýt của bạn.
-- **Hình:** một ảnh chương 9 hoặc 10 ở lúc va chạm.
-- **Bạn tự lái thì sao:** nếu bạn đã thử lái, bạn tránh được không, và bạn làm gì khác planner?
-- **Cách sửa:** núm chỉnh nào sửa được rắc rối này? Nếu không núm nào sửa được, planner cần thêm **logic gì** (mô tả, không cần code)?
+- **Rắc rối:** một **xe chết máy** đứng yên trong làn của xe ta (`hazard.json`: `stalled`, `lane` E2, `x` = 60 m). Ngoài đời: xe hỏng hoặc đỗ sai chắn làn.
+- **Căn cứ:** xe đứng yên không có tín hiệu di chuyển, planner có thể phản ứng muộn, và nó còn làm lệch hành vi của xe chuyển làn C2 phía sau. Trong cảnh gốc (x = 60), planner tông C2 lúc 6,2 s (`mine.json: exact.planner`), nên tôi nghi ngờ sự tương tác này.
+- **Giả định:** `space.h0_x` = [20, 140] m; `exposure` = 0,005 chuyến⁻¹ là **giả định dạy học** (khoảng 1 lần gặp xe chắn làn trên 200 chuyến đô thị), không có dữ liệu thật trong lab (`hazard.json: why`).
+- **Kết quả** (`mine.json`), 1 494 phiên bản khả thi trên 1 500 (`accepted` = 0,996; `n` = 1 266 sau khi bỏ 228 phiên bản có xe chết máy trùng vị trí xe ta lúc đầu):
+
+| | crashes | avoidable | unavoidable | unattributed | low_speed |
+|---|---|---|---|---|---|
+| policy gốc | 0 | 0 | 0 | 0 | 0 |
+| policy chọn ở bước E | 0 | 0 | 0 | 0 | 0 |
+
+  P(lỗi planner | rắc rối) = 0, Wilson 95 % = [0 ; 3,03e-3]; tần suất mỗi chuyến = 0,005 × cận trên 3,03e-3 = **1,51e-5** (`per_trip_hi`), thấp hơn nhiều so với tần suất lách xe buýt (Monte Carlo 2,33e-3).
+- **Hình:** chưa chụp ảnh chương 9/10 trong lần chạy này.
+- **Bạn tự lái thì sao:** chưa thử tự lái.
+- **Cách sửa:** không cần núm nào: planner đã xử lý tốt rắc rối này trên dải [20, 140] m (đây cũng là một kết quả). Vì cận trên chỉ ra không phải bằng chứng "an toàn tuyệt đối" (n = 1 266). Lưu ý "tránh được" là chuẩn lạc quan: nó cho phanh hết cỡ ngay khi thấy, nên đếm nhiều hơn số va chạm một planner thật tránh được, nhưng cũng chỉ thử phanh nên đếm ít đi so với khi được đánh lái. Còn cảnh gốc (x = 60) cho thấy một va chạm `ego`–`C2` khi xe chết máy chắn làn; nếu muốn sửa cần thêm logic dự đoán xe chuyển làn có thể chen vào khi ta bị ép về một phía.
+
