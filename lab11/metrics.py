@@ -51,7 +51,20 @@ def contact_type(R: core.Rollout, k: int, event: dict) -> str:
     Put the other actor in the ego's frame: lon = r . h, lat = -r_x h_z + r_z h_x with h = (hx, hz) of the ego.
     'front' if lon > 2.3 and |lat| < 1.6; 'rear' if lon < -2.3 and |lat| < 1.6; otherwise 'side'.
     """
-    raise NotImplementedError("TODO 2: contact_type")
+    f = event["f"]
+    ego = R.F[k, f, core.IX["ego"]]
+    other = event["b"] if event["a"] == "ego" else event["a"]
+    o = R.F[k, f, core.IX[other]]
+    rx, rz = float(o[0] - ego[0]), float(o[1] - ego[1])
+    hx, hz = float(ego[2]), float(ego[3])
+    lon = rx * hx + rz * hz
+    lat = -rx * hz + rz * hx
+    if abs(lat) < 1.6:
+        if lon > HALF_EGO:
+            return "front"
+        if lon < -HALF_EGO:
+            return "rear"
+    return "side"
 
 
 def progress_metrics(R: core.Rollout) -> tuple[np.ndarray, np.ndarray]:
