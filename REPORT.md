@@ -85,7 +85,7 @@ Nếu chỉ chạy một cuộc săn chung, CEM co về kiểu dễ nhất (`bus
 | bản sửa, TEST (`chosen_test`) | 2,77e-8 | 4,54e-8 | **3,88e-2** | 214,6 | 7,80 |
 | policy gốc, TEST (`baseline_test`) | 1,53e-3 | 3,69e-3 | 4,97e-3 | 214,6 | 8,47 |
 
-Vì sao `fail_hi` của bản sửa (3,88e-2) lớn hơn `fail` của bản gốc (1,53e-3) dù bản sửa tốt hơn: kiểu `bus_bypass` được đánh dấu `unseen` (0 va chạm trên TEST), nên nó vẫn cộng cận trên 3/(0,2·n) ≈ 3,75e-2 vào `fail_hi`. Với n = 400, không thể chứng nhận được một kiểu đã biến mất. Bản sửa **có vẻ** tốt hơn (40 000 lần nhỏ hơn ở `fail_hi_seen`), nhưng dữ liệu không đủ để chứng nhận.
+Vì sao `fail_hi` của bản sửa (3,88e-2) lớn hơn `fail` của bản gốc (1,53e-3) dù bản sửa tốt hơn: kiểu `bus_bypass` được đánh dấu `unseen` (0 va chạm trên TEST), nên nó vẫn cộng cận trên 3/(0,2·n) ≈ 3,75e-2 vào `fail_hi`. Với n = 400, không thể chứng nhận được một kiểu đã biến mất. Bản sửa **có vẻ** tốt hơn (`fail_hi_seen` 4,54e-8 so với 3,69e-3), nhưng dữ liệu không đủ để chứng nhận.
 
 Nhắc thêm: `choose_policy` chọn bản này vì mọi ứng viên có `cutinLat` ≥ 3,0 đều có TRAIN `fail_hi` = 0 do `unseen`: đúng cái bẫy README cảnh báo. Con số nên tin là TEST, không phải TRAIN.
 
@@ -125,5 +125,5 @@ Nếu được thêm một tuần: đo lại trên ~10⁵ lần chạy Monte Car
   P(lỗi planner | rắc rối) = 0, Wilson 95 % = [0 ; 3,03e-3]; tần suất mỗi chuyến = 0,005 × cận trên 3,03e-3 = **1,51e-5** (`per_trip_hi`), thấp hơn nhiều so với tần suất lách xe buýt (Monte Carlo 2,33e-3).
 - **Hình:** chưa chụp ảnh chương 9/10 trong lần chạy này.
 - **Bạn tự lái thì sao:** chưa thử tự lái.
-- **Cách sửa:** không cần núm nào: planner đã xử lý tốt rắc rối này trên dải [20, 140] m (đây cũng là một kết quả). Vì cận trên chỉ ra không phải bằng chứng "an toàn tuyệt đối" (n = 1 266). Lưu ý "tránh được" là chuẩn lạc quan: nó cho phanh hết cỡ ngay khi thấy, nên đếm nhiều hơn số va chạm một planner thật tránh được, nhưng cũng chỉ thử phanh nên đếm ít đi so với khi được đánh lái. Còn cảnh gốc (x = 60) cho thấy một va chạm `ego`–`C2` khi xe chết máy chắn làn; nếu muốn sửa cần thêm logic dự đoán xe chuyển làn có thể chen vào khi ta bị ép về một phía.
+- **Cách sửa:** không cần núm nào: planner đã xử lý tốt rắc rối này trên dải [20, 140] m (đây cũng là một kết quả). Cận trên 3,03e-3 với n = 1 266 không phải bằng chứng an toàn tuyệt đối. Lưu ý "tránh được" là chuẩn lạc quan: nó cho phanh hết cỡ ngay khi thấy, nên đếm nhiều hơn số va chạm một planner thật tránh được, nhưng cũng chỉ thử phanh nên đếm ít đi so với khi được đánh lái. Còn cảnh gốc (x = 60) cho thấy một va chạm `ego`–`C2` khi xe chết máy chắn làn; nếu muốn sửa cần thêm logic dự đoán xe chuyển làn có thể chen vào khi ta bị ép về một phía.
 
