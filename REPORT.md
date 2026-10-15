@@ -103,7 +103,12 @@ Ba giả định ảnh hưởng nhiều nhất (`avsim/space.py`):
 
 ## 8. Giới hạn
 
-Ba điều mà xác suất bạn báo **không** nói, ví dụ: thế giới chỉ có một con phố; người lái chỉ là IDM; cảm biến hoàn hảo trừ phần bị xe buýt che. Nếu được thêm một tuần, bạn sẽ đo gì tiếp?
+Xác suất đã báo **không** nói:
+1. Thế giới chỉ có một con phố với đúng một xe buýt, một người đi bộ, một xe chuyển làn: không có giao lộ, đèn đỏ, xe máy, xe đạp, thời tiết ngoài hai mức ma sát.
+2. Mọi người lái khác là IDM (đã điều chỉnh): người lái thật hung hăng, xao nhãng hoặc phá luật, nên các kiểu như `rear_ended` có thể hiếm sai khác.
+3. Cảm biến của ta hoàn hảo trừ phần bị xe buýt che, và chỉ phanh được (không đánh lái); IS cho con số thấp hơn thật 1,5–4 lần và các seed lệch nhau (3,74e-4 đến 1,64e-3), nên chỉ nên tin bậc độ lớn.
+
+Nếu được thêm một tuần: đo lại trên ~10⁵ lần chạy Monte Carlo trực tiếp quanh vùng `bus_bypass`, thêm cuộc săn có nhiều seed hơn cho `crosswalk_block`, và hiệu chỉnh các phân phối bằng dữ liệu thật như ở câu 7.
 
 ## 9. Rắc rối của bạn (bước G + chương 10)
 
