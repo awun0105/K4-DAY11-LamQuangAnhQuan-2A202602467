@@ -77,7 +77,21 @@ Nếu chỉ chạy một cuộc săn chung, CEM co về kiểu dễ nhất (`bus
 
 ## 6. Sửa planner (bước E + 3D)
 
-`fix.json`: policy được chọn, `fail` và `fail_hi` trên TRAIN, trên TEST (`fail_hi_seen` và `fail_hi`), và của policy gốc trên TEST; vì sao `fail_hi` của bản sửa có thể lớn hơn `fail` của policy gốc dù bản sửa tốt hơn thật? quãng đường và số lần phanh gấp. Một ảnh chụp 3D có **bóng mờ** (policy gốc) cho một kịch bản mà bản sửa tránh được. Có núm chỉnh nào "nghe thì an toàn hơn" nhưng thực tế làm tăng thất bại? Giải thích bằng cách thế giới phản ứng lại.
+`fix.json`: policy được chọn bằng `choose_policy` trên TRAIN: `{"cutinLat": 3.0}`.
+
+| | fail | fail_hi_seen | fail_hi (hợp lệ) | quãng đường (m) | phanh gấp |
+|---|---|---|---|---|---|
+| bản sửa, TRAIN (`chosen`) | 1,10e-7 | 2,11e-7 | 2,11e-7 | 212,5 | 7,94 |
+| bản sửa, TEST (`chosen_test`) | 2,77e-8 | 4,54e-8 | **3,88e-2** | 214,6 | 7,80 |
+| policy gốc, TEST (`baseline_test`) | 1,53e-3 | 3,69e-3 | 4,97e-3 | 214,6 | 8,47 |
+
+Vì sao `fail_hi` của bản sửa (3,88e-2) lớn hơn `fail` của bản gốc (1,53e-3) dù bản sửa tốt hơn: kiểu `bus_bypass` được đánh dấu `unseen` (0 va chạm trên TEST), nên nó vẫn cộng cận trên 3/(0,2·n) ≈ 3,75e-2 vào `fail_hi`. Với n = 400, không thể chứng nhận được một kiểu đã biến mất. Bản sửa **có vẻ** tốt hơn (40 000 lần nhỏ hơn ở `fail_hi_seen`), nhưng dữ liệu không đủ để chứng nhận.
+
+Nhắc thêm: `choose_policy` chọn bản này vì mọi ứng viên có `cutinLat` ≥ 3,0 đều có TRAIN `fail_hi` = 0 do `unseen`: đúng cái bẫy README cảnh báo. Con số nên tin là TEST, không phải TRAIN.
+
+Núm "nghe an toàn hơn" nhưng tệ hơn: `T` = 2,0 (giãn khoảng cách theo sau) có `fail_hi` TRAIN = 6,48e-4, cao hơn policy gốc (3,42e-4). Giải thích khả dĩ: xe chuyển làn chờ một khe đủ rộng (gap acceptance), nên khoảng trống lớn hơn trước mặt ta mời xe C2 chen vào sớm hơn và gần hơn. Đây là suy luận từ cơ chế, chưa tách riêng để kiểm chứng.
+
+Ảnh 3D có bóng mờ: *chưa chụp trong lần chạy này*.
 
 ## 7. Từ mô phỏng ra đường thật
 
