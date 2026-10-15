@@ -28,13 +28,17 @@
   "fix": {
    "quick": false,
    "at": "2026-10-15 10:34"
+  },
+  "mine": {
+   "quick": false,
+   "at": "2026-10-15 11:09"
   }
  },
  "_run": {
   "mssv": "202602467",
   "town": "A",
   "quick": false,
-  "step": "fix",
+  "step": "mine",
   "salted": false,
   "budgets": {
    "replay_n": 400,
