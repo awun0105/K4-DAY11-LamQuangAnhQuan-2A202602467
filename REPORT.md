@@ -95,7 +95,11 @@ Núm "nghe an toàn hơn" nhưng tệ hơn: `T` = 2,0 (giãn khoảng cách theo
 
 ## 7. Từ mô phỏng ra đường thật
 
-Phân phối tự nhiên trong `space.py` là giả định. Chọn **ba** giả định ảnh hưởng nhiều nhất đến con số của bạn (ví dụ khe chấp nhận của xe chuyển làn, tỉ lệ người đi bộ ngó qua xe buýt, ma sát đường ướt). Với mỗi cái: dữ liệu thật nào sẽ thay nó, lấy từ đâu, và nếu nó sai thì con số của bạn sai theo hướng nào?
+Ba giả định ảnh hưởng nhiều nhất (`avsim/space.py`):
+
+1. **Khe chấp nhận của xe chuyển làn** (`cutGap`, log-chuẩn, trung vị 12 m). Dữ liệu thay thế: quỹ đạo cut-in từ bộ dữ liệu giao thông (như highD hoặc NGSIM) hoặc log đội xe tại đúng loại đường. Nếu khe thật hẹp hơn thì va chạm thật **nhiều hơn** con số của ta.
+2. **Tỉ lệ người đi bộ ngó qua xe buýt** (`pedLook` = 0,85). Dữ liệu: video camera ở các điểm băng ngang có xe buýt đỗ, đếm hành vi nhìn trước khi bước. Nếu thật sự ít ngó hơn thì `crosswalk_block` và va chạm với người đi bộ **nhiều hơn**.
+3. **Ma sát đường ướt** (`mu` = 0,5 khi ướt, 0,8 khi khô, tỉ lệ ướt do thị trấn). Dữ liệu: thống kê thời tiết địa phương và đo ma sát mặt đường. Nếu đường ướt hơn hoặc trơn hơn, quãng phanh dài ra và con số **thấp hơn thực tế**.
 
 ## 8. Giới hạn
 
