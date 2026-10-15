@@ -4,7 +4,7 @@ MSSV: 202602467
 
 Mỗi câu: trả lời ngắn, **trích số từ `evidence/`** (ghi tên file và trường, ví dụ `mc.json: crashes = 4`). Grader chạy lại với MSSV của bạn; số không khớp `evidence/` thì mất điểm phần D (RUBRIC), và câu dựa trên số sai khó được điểm đầy đủ. Không cần văn hay: một bảng nhỏ và hai, ba câu giải thích là đủ.
 
-Thị trấn của bạn (`meta.json: _run.town`): 
+Thị trấn của bạn (`meta.json: _run.town`): **A**
 
 ## 1. Phát lại log có trung thực không? (bước A)
 
